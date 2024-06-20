@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Cors</title>
+</head>
+<body>
+    <h2>Probando cors desde un servidor diferente (f12)</h2>
+
+    <script>
+        const urlWebApi = 'https://localhost:7109/generos';
+        
+        const consumirWebAPI = async () => {
+            const response = await fetch(urlWebApi, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            const data = await response.json();
+            console.log(data);
+        }
+        consumirWebAPI();
+    </script>
+
+</body>
+</html>
