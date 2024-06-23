@@ -15,6 +15,7 @@ namespace MinimalApiPeliculas.EndPoints
         public static RouteGroupBuilder MapUsuarios(this RouteGroupBuilder group)
         {
             group.MapPost("/registrar", Registrar).AddEndpointFilter<FiltrosValidaciones<CredencialesUsurioDTO>>();
+            group.MapPost("/login", Login).AddEndpointFilter<FiltrosValidaciones<CredencialesUsurioDTO>>();
             return group;
         }
 
@@ -27,7 +28,7 @@ namespace MinimalApiPeliculas.EndPoints
                 Email = usurioDTO.Email,
             };
 
-            var resultado = await userManager.CreateAsync(usuario);
+            var resultado = await userManager.CreateAsync(usuario, usurioDTO.Password);
 
             if (resultado.Succeeded)
             {
@@ -37,6 +38,30 @@ namespace MinimalApiPeliculas.EndPoints
             else
             {
                 return TypedResults.BadRequest(resultado.Errors);
+            }
+
+        }
+
+        static async Task<Results<Ok<RespuestaAutenticacionDTO>, BadRequest<string>>> Login(CredencialesUsurioDTO credencialesUsurioDTO,
+            [FromServices] SignInManager<IdentityUser> signInManager, [FromServices] UserManager<IdentityUser> userManager, IConfiguration configuration)
+        {
+
+            var usuario = await userManager.FindByEmailAsync(credencialesUsurioDTO.Email);
+            if (usuario is null)
+            {
+                return TypedResults.BadRequest("Login incorrecto A11");
+            }
+
+            var resultado = await signInManager.CheckPasswordSignInAsync(usuario,credencialesUsurioDTO.Password,lockoutOnFailure: false);
+
+            if (resultado.Succeeded)
+            {
+                var respuestaAutenticacion = ConstruirToken(credencialesUsurioDTO, configuration);
+                return TypedResults.Ok(respuestaAutenticacion);
+            }
+            else
+            {
+                return TypedResults.BadRequest("Login incorrecto A12");
             }
 
         }
