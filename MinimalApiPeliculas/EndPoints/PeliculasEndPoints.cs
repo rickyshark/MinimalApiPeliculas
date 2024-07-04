@@ -19,13 +19,16 @@ namespace MinimalApiPelicula.EndPoints
 
         public static RouteGroupBuilder MapPeliculas(this RouteGroupBuilder group)
         {
-            group.MapPost("/", Crear).DisableAntiforgery().AddEndpointFilter<FiltrosValidaciones<CrearPeliculaDTO>>();
+            group.MapPost("/", Crear).DisableAntiforgery().AddEndpointFilter<FiltrosValidaciones<CrearPeliculaDTO>>()
+                .RequireAuthorization("esadmin");
             group.MapGet("/", ObtenerTodos).CacheOutput(x => x.Expire(TimeSpan.FromMinutes(1)).Tag("peliculas-get"));
             group.MapGet("/{id:int}", ObtenerPorId);
-            group.MapPut("{id:int}", Actualizar).DisableAntiforgery().AddEndpointFilter<FiltrosValidaciones<CrearPeliculaDTO>>();
-            group.MapDelete("{id:int}", Borrar);
-            group.MapPost("/{id:int}/asignargeneros", AsignarGeneros);
-            group.MapPost("/{id:int}/asignaractores", AsignarActores);
+            group.MapPut("{id:int}", Actualizar).DisableAntiforgery().AddEndpointFilter<FiltrosValidaciones<CrearPeliculaDTO>>()
+                .RequireAuthorization("esadmin");
+            group.MapDelete("{id:int}", Borrar)
+                .RequireAuthorization("esadmin");
+            group.MapPost("/{id:int}/asignargeneros", AsignarGeneros).RequireAuthorization("esadmin");
+            group.MapPost("/{id:int}/asignaractores", AsignarActores).RequireAuthorization("esadmin");
 
             return group;
         }

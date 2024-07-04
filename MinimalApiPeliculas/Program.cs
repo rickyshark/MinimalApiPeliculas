@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MinimalApiPeliculas.Utilidades;
 using MinimalApiPeliculas.EndPoints;
+using MinimalApiPeliculas.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 var origenesPermitidos = builder.Configuration.GetValue<string>("origenesPermitidos")!;
@@ -54,6 +55,7 @@ builder.Services.AddScoped<IRepositorioErrores, RepositorioErrores>();
 
 
 builder.Services.AddScoped<IAlmacenadorArchivo, AlmacenadorArchicosAzure>();
+builder.Services.AddTransient<IServicioUsuarios, ServicioUsuarios>();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -68,6 +70,9 @@ builder.Services.AddProblemDetails();
 //Configurando JWT en mi aplicacion
 builder.Services.AddAuthentication().AddJwtBearer(opciones =>
 {
+    opciones.MapInboundClaims = false;
+
+    
     opciones.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = false,
@@ -75,13 +80,17 @@ builder.Services.AddAuthentication().AddJwtBearer(opciones =>
         ValidateLifetime = true, //Validar tiempo de vida de mi token.
         ValidateIssuerSigningKey = true, //Validar que el token este firmado con su llave.
         IssuerSigningKey = Llaves.ObtenerLlave(builder.Configuration).First(), //Si quiero utilizar una unica llave. La mia.
-        //IssuerSigningKeys = Llaves.ObtenerTodasLlaves(builder.Configuration)
+                                                                                //IssuerSigningKeys = Llaves.ObtenerTodasLlaves(builder.Configuration)
         ClockSkew = TimeSpan.Zero //Investigar esto
 
     };
+    
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(opciones =>
+{
+    opciones.AddPolicy("esadmin", politica => politica.RequireClaim("esadmin"));
+});
 
 
 //Fin de area de los servicios

@@ -21,9 +21,12 @@ namespace MinimalApiPelicula.EndPoints
             group.MapGet("/", ObtenerTodos);//.CacheOutput(x => x.Expire(TimeSpan.FromMinutes(1)).Tag("actores-get"));
             group.MapGet("/{id:int}", ObtenerPorId);
             group.MapGet("ObtenerPorNombre/{nombreActor}", ObtenerPorNombre);
-            group.MapPost("/", Crear).DisableAntiforgery().AddEndpointFilter<FiltrosValidaciones<CrearActorDTO>>();
-            group.MapPut("/{id:int}", Actualizar).DisableAntiforgery().AddEndpointFilter<FiltrosValidaciones<CrearActorDTO>>();
-            group.MapDelete("/{id:int}", Borrar);
+            group.MapPost("/", Crear).DisableAntiforgery().AddEndpointFilter<FiltrosValidaciones<CrearActorDTO>>()
+                .RequireAuthorization("esadmin");
+            group.MapPut("/{id:int}", Actualizar).DisableAntiforgery().AddEndpointFilter<FiltrosValidaciones<CrearActorDTO>>()
+                .RequireAuthorization("esadmin");
+            group.MapDelete("/{id:int}", Borrar)
+                .RequireAuthorization("esadmin");
             return group;
         }
 
