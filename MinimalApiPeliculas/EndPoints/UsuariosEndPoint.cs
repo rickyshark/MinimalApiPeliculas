@@ -73,7 +73,7 @@ namespace MinimalApiPeliculas.EndPoints
 
         }
 
-        static async Task<Results<NoContent, NotFound<string>>> HacerAdmin(EditarClaimDTO editarClaimDTO, [FromServices] UserManager<IdentityUser> userManager)
+        static async Task<Results<NoContent, NotFound<string>, Ok<string>>> HacerAdmin(EditarClaimDTO editarClaimDTO, [FromServices] UserManager<IdentityUser> userManager)
         {
             var usuario = await userManager.FindByEmailAsync(editarClaimDTO.Email);
 
@@ -82,8 +82,15 @@ namespace MinimalApiPeliculas.EndPoints
                 return TypedResults.NotFound("Usuario no encontrado");
             }
 
-            await userManager.AddClaimAsync(usuario, new Claim("esadmin", "true"));
-            return TypedResults.NoContent();
+            var result = await userManager.AddClaimAsync(usuario, new Claim("esadmin", "true"));
+            if (result.Succeeded)
+            {
+                return TypedResults.Ok("Claim agregado con exitosamente");
+            }
+            else
+            {
+                return TypedResults.NoContent();
+            }
         }
 
         static async Task<Results<NoContent, NotFound<string>>> RemoverAdmin(EditarClaimDTO editarClaimDTO, [FromServices] UserManager<IdentityUser> userManager)
