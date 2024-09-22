@@ -106,6 +106,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+
 app.UseExceptionHandler(exceptionHandlerApp => exceptionHandlerApp.Run(async context =>
 {
     var esceptionHanleFeatures = context.Features.Get<IExceptionHandlerFeature>();
@@ -139,6 +140,8 @@ app.MapGroup("/peliculas").MapPeliculas();
 app.MapGroup("/peliculas/{peliculaId:int}/comentarios").MapComentarios();
 app.MapGroup("/usuarios").MapUsuarios();
 
+// Redireccionar la raíz a Swagger
+app.Map("/", () => Results.Redirect("/swagger/index.html"));
 
 app.Map("/error", () =>
 {

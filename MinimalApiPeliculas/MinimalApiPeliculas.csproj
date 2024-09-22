@@ -25,4 +25,8 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include=".github\workflows\ci-cd.yml" />
+  </ItemGroup>
+
 </Project>
