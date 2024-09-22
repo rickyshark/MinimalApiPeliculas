@@ -64,11 +64,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Setup Node.js version (Node.js 14 or higher recommended for applicationinsights)
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '14' 
     # Install the .NET Core workload
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
@@ -97,6 +92,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    # Setup Node.js version (Node.js 14 or higher recommended for applicationinsights)
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14' 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v2
       with:
