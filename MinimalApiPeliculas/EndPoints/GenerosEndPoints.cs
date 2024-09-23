@@ -14,7 +14,7 @@ namespace MinimalApiPelicula.EndPoints
         public static RouteGroupBuilder MapGeneros(this RouteGroupBuilder group)
         {
 
-            group.MapGet("/", ObtenerGeneros)
+            group.MapGet("/", ObtenerTodosGeneros)
                 .CacheOutput(c => c.Expire(TimeSpan.FromSeconds(60)).Tag("generos-get")).RequireAuthorization();
             group.MapGet("/{id:int}", ObtenerPorId);//.AddEndpointFilter<FiltroDePrueba>();
             group.MapPost("/", NuevoGenero).AddEndpointFilter<FiltrosValidaciones<CrearGeneroDTO>>()
@@ -26,7 +26,7 @@ namespace MinimalApiPelicula.EndPoints
 
             return group;
         }
-        static async Task<Ok<List<GeneroDTO>>> ObtenerGeneros(IRepositorioGeneros repositorio, IMapper mapper)
+        static async Task<Ok<List<GeneroDTO>>> ObtenerTodosGeneros(IRepositorioGeneros repositorio, IMapper mapper)
         {
             var generos = await repositorio.ObtenerTodos();
             var generosDTO = mapper.Map<List<GeneroDTO>>(generos);
