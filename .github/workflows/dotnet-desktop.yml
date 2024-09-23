@@ -75,7 +75,7 @@ jobs:
       uses: microsoft/setup-msbuild@v2
 
     # Execute all unit tests in the solution
-    - name: Execute unit tests
+    - name: Prueba codigo
       run: dotnet test
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
