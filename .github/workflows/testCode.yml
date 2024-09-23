@@ -1,16 +1,28 @@
 name: Haciendo prueba en el codigo
 
 on:
-    push:
-        branches:
-        - HacerMejorasAqui
+  push:
+    branches:
+      - HacerMejorasAqui
 
 jobs:
-    test:
-        runs-on: ubuntu-latest
+  test:
+    runs-on: ubuntu-latest
 
-        steps:
-        - uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-        - name: Run tests
-          run: echo "Testeo de codigo"
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0.x'  # Asegúrate de usar la versión correcta de .NET Core
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
