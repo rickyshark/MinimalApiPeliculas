@@ -52,8 +52,8 @@ jobs:
       matrix:
         configuration: [Debug, Release]
 
-    runs-on: windows-latest  # For a list of available runner types, refer to
-                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    runs-on: windows-latest 
+
 
     env:
       Solution_Name: MinimalApiPeliculas.sln      
@@ -92,11 +92,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # Setup Node.js version (Node.js 14 or higher recommended for applicationinsights)
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '14' 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v2
       with:

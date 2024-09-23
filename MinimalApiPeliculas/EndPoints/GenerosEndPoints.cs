@@ -26,7 +26,7 @@ namespace MinimalApiPelicula.EndPoints
 
             return group;
         }
-        static async Task<Ok<List<GeneroDTO>>> ObtenerGeneros(string token,IRepositorioGeneros repositorio, IMapper mapper)
+        static async Task<Ok<List<GeneroDTO>>> ObtenerGeneros(IRepositorioGeneros repositorio, IMapper mapper)
         {
             var generos = await repositorio.ObtenerTodos();
             var generosDTO = mapper.Map<List<GeneroDTO>>(generos);
