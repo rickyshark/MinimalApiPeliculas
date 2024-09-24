@@ -24,5 +24,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
 
+      if: github.event_name == 'pull_request'
     - name: Run tests
       run: echo "${{github.event_name}}"
