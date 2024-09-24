@@ -25,5 +25,5 @@ jobs:
       run: dotnet build --no-restore --configuration Release
 
     - name: Run tests
-      if: ${{github.event_name == 'pull_request'}}
+      if: ${{github.event_name == 'push'}}
       run: echo "${{github.event_name}}"
