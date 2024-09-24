@@ -23,8 +23,8 @@ jobs:
 
     - name: Build
       id: buildId
-      run: dotnet build --no-restoresasasasas --configuration Release
+      run: dotnet build --no-restore --configuration Release
 
     - name: Run tests
-      #if: ${{github.event_name == 'push'}}
-      run: echo "${{job.status}}, ${{steps.buildId.outcome}} "
+      if: ${{github.event_name == 'push'}}
+      run: echo "${{job}}, ${{steps}} "
