@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
 
     steps:
     - name: Checkout code
@@ -27,4 +27,4 @@ jobs:
 
     - name: Run tests
       if: ${{github.event_name == 'push'}}
-      run: echo "${{job}}, ${{steps}} "
+      run: echo "${{job.test}}, ${{steps.buildId.outputs}} "
