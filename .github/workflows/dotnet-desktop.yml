@@ -111,5 +111,5 @@ jobs:
 
 
     - name: Run tests
-      if: steps.deploy-to-webapp.outcome == 'success'
-      run: echo "Tests passed"
+      #if: steps.deploy-to-webapp.outcome == 'success'
+      run: echo steps.deploy-to-webapp.outcome
