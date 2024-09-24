@@ -23,7 +23,7 @@ jobs:
 
     - name: Build
       id: buildId
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build --no-restoresasasasas --configuration Release
 
     - name: Run tests
       if: ${{github.event_name == 'push'}}
