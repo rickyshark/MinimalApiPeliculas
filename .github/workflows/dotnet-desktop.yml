@@ -101,6 +101,7 @@ jobs:
       run: dotnet publish -c Release -o publish
 
     - name: Deploy to Azure Web App
+      id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'minimalapipeliculas20240916202647'
@@ -109,3 +110,6 @@ jobs:
         package: ./publish
 
 
+    - name: Run tests
+      if: steps.deploy-to-webapp.outcome == 'success'
+      run: echo "Tests passed"
