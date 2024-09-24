@@ -22,8 +22,9 @@ jobs:
       run: dotnet restore
 
     - name: Build
+      id: buildId
       run: dotnet build --no-restore --configuration Release
 
     - name: Run tests
       if: ${{github.event_name == 'push'}}
-      run: echo "${{job.status}}"
+      run: echo "${{job.status}}, ${{steps.buildId.outcome}} "
