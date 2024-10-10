@@ -77,7 +77,14 @@ jobs:
       with:
         status: ${{ job.status }}
         mention: '@channel'
-        message: 'The deployment to Azure Web App is complete!'
+        message: |
+          *Deployment Notification*
+          Repository: ${{ github.repository }}
+          Branch: ${{ github.ref }}
+          Commit: ${{ github.sha }}
+          Author: ${{ github.actor }}
+          Status: ${{ job.status }}
+          The deployment to Azure Web App is complete!
 
 
     - name: Run tests
