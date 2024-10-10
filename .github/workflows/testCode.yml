@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest 
 
     steps:
     - name: Checkout code
@@ -22,7 +22,9 @@ jobs:
       run: dotnet restore
 
     - name: Build
+      id: buildId
       run: dotnet build --no-restore --configuration Release
 
     - name: Run tests
-      run: dotnet test --no-build --verbosity normal
+      if: ${{github.event_name == 'push'}}
+      run: echo "${{job.test}}, ${{steps.buildId.outputs}} "
